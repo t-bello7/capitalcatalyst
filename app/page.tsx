@@ -121,15 +121,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      <section className="bg-secondary relative mt-4 rounded-3xl p-4 text-text-onColor mx-auto space-y-2 container max-w-[85%]" id="jumbotron-section">
-        <div className="flex-1 w-full flex flex-col gap-4">
-          <nav className="w-full flex justify-center h-16">
-            <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-              <div className="flex gap-5 items-center font-semibold">
-                <Link href="/">Nexora</Link>
-                <ThemeSwitcher />
-              </div>
-              <div className="hidden">
+      <section className="bg-secondary relative mt-4 mx-auto max-w-6xl rounded-3xl px-4 py-6 text-text-onColor space-y-6 sm:space-y-8 shadow-[0_25px_90px_-60px_rgba(0,0,0,0.45)]" id="jumbotron-section">
+        <nav className="w-full">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-2xl bg-white/5 px-4 py-3 text-sm backdrop-blur supports-[backdrop-filter]:backdrop-blur">
+            <div className="flex items-center gap-3 font-semibold">
+              <Link href="/">Nexora</Link>
+              <ThemeSwitcher />
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex">
                 {!hasEnvVars ? (
                   <EnvVarWarning />
                 ) : (
@@ -138,38 +138,47 @@ export default function Home() {
                   </Suspense>
                 )}
               </div>
+              <Button size="sm" className="px-4 py-2 sm:hidden">Join</Button>
             </div>
-          </nav>
+          </div>
+        </nav>
 
-          <span> Introducing Nexora </span>
-          <h1> Future-Ready Investing for Everyone</h1>
-          <p> Empowering you to make smart investment decisions with cutting-edge technology and user-friendly tools.</p>
-          <Button>Get Started</Button>
-          <div className="flex justify-between">
-            <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarImage src="https://github.com/maxleiter.png" alt="@maxleiter" />
-                <AvatarFallback>LR</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarImage src="https://github.com/evilrabbit.png" alt="@evilrabbit" />
-                <AvatarFallback>ER</AvatarFallback>
-              </Avatar>
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div className="flex w-full flex-col gap-5">
+            <div className="space-y-3 text-center lg:text-left">
+              <span className="text-xs uppercase tracking-[0.35em] text-white/70">Introducing Nexora</span>
+              <h1 className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">Future-Ready Investing for Everyone</h1>
+              <p className="text-base text-white/80 sm:text-lg">Empowering you to make smart investment decisions with cutting-edge technology and user-friendly tools.</p>
             </div>
-            <span className="text-sm italic self-end">24+ joined today!</span>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-start">
+              <Button className="w-full sm:w-auto">Get Started</Button>
+              <div className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 px-3 py-2 text-xs text-white/80 sm:text-sm">
+                <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/maxleiter.png" alt="@maxleiter" />
+                    <AvatarFallback>LR</AvatarFallback>
+                  </Avatar>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/evilrabbit.png" alt="@evilrabbit" />
+                    <AvatarFallback>ER</AvatarFallback>
+                  </Avatar>
+                </div>
+                <span className="text-[12px] italic text-white/80 sm:text-sm">24+ joined today!</span>
+              </div>
+            </div>
+          </div>
+          <div className="relative order-first h-[260px] rounded-3xl bg-white/5 px-4 py-6 shadow-inner sm:h-[320px] lg:order-none">
+            <Image src={BitCoin} alt="Bitcoin" width={100} height={100} className="absolute right-6 top-6 sm:right-10" />
+            <Image src={Tether} alt="Tether" width={100} height={100} className="absolute bottom-6 right-8 sm:right-12" />
+            <Image src={UsdCoin} alt="USD Coin" width={100} height={100} className="absolute left-4 top-6 sm:left-6" />
+            <Image src={PolkaDot} alt="PolkaDot" width={100} height={100} className="absolute bottom-6 left-10 sm:left-16" />
           </div>
         </div>
-        <div className="mx-auto container relative mt-4 mb-4 rounded-3xl p-4 h-[20vh]">
-          <Image src={BitCoin} alt="Bitcoin" width={100} height={100} className="absolute right-10" />
-          <Image src={Tether} alt="Tether" width={100} height={100} className="absolute right-10 bottom-0" />
-          <Image src={UsdCoin} alt="USD Coin" width={100} height={100} />
-          <Image src={PolkaDot} alt="PolkaDot" width={100} height={100} />
-        </div>
-        <div className="grid mt-4 items-center gap-8 grid-cols-2 md:grid-cols-4 my-20 bg-[#1D1D1D] border border-[#393939] p-8 rounded-lg">
+        <div className="grid items-center gap-6 rounded-xl border border-[#393939] bg-[#1D1D1D] p-6 sm:grid-cols-2 sm:p-8 md:grid-cols-4">
           <div className="flex flex-col items-center text-center">
             <div className="text-2xl bg-clip-text text-transparent bg-[linear-gradient(18deg,#C5CB74_50%,#FFF_83.82%)] font-bold"> 1M+ </div>
             <div className="text-[#A4B0BE] md:block"> Active Traders </div>
@@ -188,7 +197,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="mt-12 rounded-[36px] bg-gradient-to-br from-[#0c1425] via-[#070a12] to-[#05050a] px-6 py-10 text-white">
+      <section className="mt-12 mx-auto max-w-6xl rounded-[36px] bg-gradient-to-br from-[#0c1425] via-[#070a12] to-[#05050a] px-4 py-10 text-white sm:px-8">
         <div className="max-w-5xl mx-auto space-y-3 text-center">
           <p className="text-sm uppercase tracking-[0.4em] text-[#6bc4ff]">Why is this app for you?</p>
           <h2 className="text-3xl md:text-4xl font-semibold">Designed for every investor</h2>
@@ -208,7 +217,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section className="mt-12 rounded-[32px] border border-white/10 bg-[#07070d] p-6 text-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.7)]">
+      <section className="mt-12 mx-auto max-w-6xl rounded-[32px] border border-white/10 bg-[#07070d] px-4 py-6 text-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.7)] sm:px-8">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.4em] text-[#f9a826]">Start Trading Now</p>
@@ -229,7 +238,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section className="px-4 mb-16">
+      <section className="mx-auto mb-16 max-w-6xl px-4">
         <div className="max-w-5xl mx-auto space-y-3 text-center">
           <p className="text-sm uppercase tracking-widest text-[#A4B0BE]">Investment plans</p>
           <h2 className="text-3xl font-semibold">Choose the plan that fits your goals</h2>
@@ -273,7 +282,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section className="px-4 mb-16">
+      <section className="mx-auto mb-16 max-w-6xl px-4">
         <div className="max-w-5xl mx-auto space-y-3 text-center">
           <p className="text-sm uppercase tracking-[0.4em] text-[#fcd34d]">We support 1,000+ cryptocurrencies</p>
           <h2 className="text-3xl font-semibold text-white">Track the markets in one place</h2>
@@ -306,7 +315,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="mb-16 px-4">
+      <section className="mx-auto mb-16 max-w-6xl px-4">
         <div className="max-w-5xl mx-auto space-y-4 text-center">
           <p className="text-sm uppercase tracking-[0.4em] text-[#7c87ff]">What our users say</p>
           <h2 className="text-3xl font-semibold text-white">Trusted by investors worldwide</h2>
@@ -328,7 +337,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section className="mb-16 px-4">
+      <section className="mx-auto mb-16 max-w-6xl px-4">
         <div className="max-w-5xl mx-auto rounded-3xl border border-white/10 bg-gradient-to-br from-[#0e0f19] to-[#05060d] p-8 text-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.6)]">
           <div className="flex flex-col gap-4 md:items-center md:justify-between md:flex-row">
             <div>
@@ -354,7 +363,7 @@ export default function Home() {
           </form>
         </div>
       </section>
-      <footer className="px-4 pb-16">
+      <footer className="mx-auto max-w-6xl px-4 pb-16">
         <div className="mx-auto grid max-w-5xl gap-6 rounded-3xl border border-white/10 bg-[#05060d] p-8 text-[#d0d7f1] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.8)] md:grid-cols-3">
           <div className="space-y-3">
             <p className="text-sm uppercase tracking-[0.4em] text-white">Nexora</p>
