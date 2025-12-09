@@ -26,7 +26,7 @@ export default {
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "var(--secondary)",
           foreground: "hsl(var(--secondary-foreground))",
         },
         muted: {
@@ -51,6 +51,10 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        text: {
+          DEFAULT: "var(--text-primary)",
+          onColor: "var(--text-on-color)",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
