@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const awards = [
   { title: "Most Transparent FX Broker", organization: "The Forex Expo USA", date: "Dec, 2018" },
@@ -119,6 +120,7 @@ const testimonialCards = [
 ];
 
 export default function Home() {
+  const router = useRouter()
   // const sectionVariants = {
   //   hidden: { opacity: 0, y: 36 },
   //   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -146,8 +148,9 @@ export default function Home() {
             <Link href="/">Account</Link>
           </nav>
           <div className="flex items-center gap-2">
-            <Button className="bg-white px-4 text-[#0f1524] hover:bg-white/90">Client Portal</Button>
-            <Button className="bg-[#2956e3] px-5 hover:bg-[#1f46c1]">Register</Button>
+            
+            <Button className="bg-white px-4 text-[#0f1524] hover:bg-white/90" onClick={() => router.push("/dashboard")}>Client Portal</Button>
+            <Button className="bg-[#2956e3] px-5 hover:bg-[#1f46c1]" onClick={() => router.push("/auth/sign-up")}>Register</Button>
           </div>
         </div>
       </header>
