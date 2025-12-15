@@ -21,7 +21,7 @@ export default function Page() {
         </div>
 
         <div className="grid items-stretch gap-10 lg:grid-cols-[1.08fr_0.92fr]">
-          <div className="relative overflow-hidden rounded-[36px] bg-gradient-to-br from-[#ecff60] via-[#dfff3f] to-[#c5f63b] p-8 text-[#0c0c0c] shadow-[0_60px_120px_-70px_rgba(132,146,12,0.6)]">
+          <div className="hidden md:block relative overflow-hidden rounded-[36px] bg-gradient-to-br from-[#ecff60] via-[#dfff3f] to-[#c5f63b] p-8 text-[#0c0c0c] shadow-[0_60px_120px_-70px_rgba(132,146,12,0.6)]">
             <div className="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.42),transparent_45%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.38),transparent_45%),radial-gradient(circle_at_50%_90%,rgba(255,255,255,0.35),transparent_40%)]" />
             <div className="relative space-y-6">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#0c0c0c] shadow-sm">
