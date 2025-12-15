@@ -20,9 +20,6 @@ export default function Page() {
             <span className="hidden items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] shadow-[0_20px_50px_-34px_rgba(0,0,0,0.35)] sm:inline-flex">
               Trusted by <span className="text-[#0c0c0c]">100k+</span>
             </span>
-            <button className="inline-flex items-center gap-2 rounded-full bg-[#0c0c0c] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_25px_60px_-30px_rgba(0,0,0,0.5)] transition-transform hover:-translate-y-0.5">
-              Download app
-            </button>
           </div>
         </div>
 
@@ -54,17 +51,7 @@ export default function Page() {
                   Zero hidden fees
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <button className="inline-flex items-center gap-2 rounded-full bg-[#0c0c0c] px-5 py-3 text-sm font-semibold text-white shadow-[0_25px_70px_-35px_rgba(0,0,0,0.7)] transition-transform hover:-translate-y-0.5">
-                  Download app
-                </button>
-                <span className="flex items-center gap-2 text-sm font-semibold text-[#0c0c0c]">
-                  See how it works
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-xs">
-                    ↓
-                  </span>
-                </span>
-              </div>
+           
             </div>
             <div className="relative mt-12 flex justify-end">
               <div className="relative w-full max-w-[380px] rotate-[-4deg]">

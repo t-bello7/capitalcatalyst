@@ -243,7 +243,7 @@ export function SignUpForm({
             <div className="text-center text-sm text-[#4b4f5c]">
               Already have an account?{" "}
               <Link
-                href="/auth/login"
+                href="/login"
                 className="font-semibold text-[#0c0c0c] underline decoration-[#dfff3f] underline-offset-4"
               >
                 Sign in

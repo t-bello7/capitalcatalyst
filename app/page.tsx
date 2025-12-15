@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "nextjs-toploader/app";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const features = [
@@ -76,6 +77,13 @@ const marketRows = [
   },
 ];
 
+const tickers = [
+  { name: "XRP", rank: "#5", price: "$2.00", change: "-0.71%", mcap: "$120.99B", vol: "$1.90B", positive: false, icon: "https://cryptologos.cc/logos/xrp-xrp-logo.png?v=032" },
+  { name: "USDC", rank: "#6", price: "$0.9998", change: "-0.02%", mcap: "$78.39B", vol: "$7.62B", positive: false, icon: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=032" },
+  { name: "SOL", rank: "#7", price: "$131.72", change: "-0.62%", mcap: "$74.15B", vol: "$3.28B", positive: false, icon: "https://cryptologos.cc/logos/solana-sol-logo.png?v=032" },
+  { name: "ETH", rank: "#2", price: "$3,125.44", change: "+0.45%", mcap: "$376.04B", vol: "$20.83B", positive: true, icon: "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=032" },
+];
+
 const sectionProps = {
   initial: { opacity: 0, y: 36 },
   whileInView: { opacity: 1, y: 0 },
@@ -109,12 +117,58 @@ export default function Home() {
             <button onClick={() =>router.push("/login")} className="hidden rounded-full px-4 py-2 text-sm font-semibold text-[#0c0c0c] hover:-translate-y-0.5 hover:text-black md:inline-flex">
               Log in
             </button>
-            <button onClick={() =>router.push("/sign-up")} className="inline-flex items-center gap-2 rounded-full bg-[#0c0c0c] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_20px_60px_-30px_rgba(0,0,0,0.65)] transition-transform hover:-translate-y-0.5">
+            <button onClick={() =>router.push("/signup")} className="inline-flex items-center gap-2 rounded-full bg-[#0c0c0c] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_20px_60px_-30px_rgba(0,0,0,0.65)] transition-transform hover:-translate-y-0.5">
               Register
             </button>
           </div>
         </div>
       </header>
+
+      {/* <div className=" pb-6 pt-4">
+        <div className="overflow-hidden bg-[#0f1118] text-white shadow-[0_25px_70px_-50px_rgba(0,0,0,0.65)]">
+          <div className="flex gap-3 overflow-x-auto px-3 py-3">
+            {tickers.map((item) => (
+              <div
+                key={item.name}
+                className="flex min-w-[240px] items-center gap-3 rounded-2xl border border-white/5 bg-white/5 px-4 py-3"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                  <Image src={item.icon} alt={item.name} width={28} height={28} className="h-7 w-7 object-contain" />
+                </div>
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold">{item.name}</span>
+                    <span className="text-xs text-white/60">{item.rank}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-white/80">
+                    <span className="text-base font-semibold text-white">{item.price}</span>
+                    <span
+                      className={`rounded-full px-2 py-1 font-semibold ${
+                        item.positive ? "bg-emerald-500/20 text-emerald-300" : "bg-rose-500/15 text-rose-300"
+                      }`}
+                    >
+                      {item.change}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 text-[11px] text-white/60">
+                    <span>MCAP: {item.mcap}</span>
+                    <span>Vol: {item.vol}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center gap-4 border-t border-white/10 px-4 py-2 text-xs text-white/80">
+            <span className="flex items-center gap-1 text-emerald-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              Market Status: Open 24/7
+            </span>
+            <span>7:06:44 AM UTC</span>
+            <span className="text-emerald-300">↑ 37 gainers</span>
+            <span className="text-rose-300">↓ 61 losers</span>
+          </div>
+        </div>
+      </div> */}
 
       <motion.section id="market" {...sectionProps} className="mx-auto max-w-6xl px-4 pb-14 pt-10">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
