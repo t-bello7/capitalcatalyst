@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import NextTopLoader from 'nextjs-toploader';
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -13,10 +14,11 @@ export const metadata: Metadata = {
   description: "The fastest way to invest",
 };
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   display: "swap",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export default function RootLayout({
@@ -26,7 +28,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+      <body className={`${jakarta.className} antialiased`}>
+         <NextTopLoader color="#dfff3f" zIndex={2000} height={5} showSpinner={false} />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

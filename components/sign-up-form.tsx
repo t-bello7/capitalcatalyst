@@ -71,17 +71,19 @@ export function SignUpForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="border border-white/10 bg-white shadow-[0_30px_80px_-40px_rgba(20,30,60,0.25)]">
-        <CardHeader className="space-y-2">
-          <CardTitle className="text-3xl text-[#1f2435]">Create an Account</CardTitle>
-          <CardDescription className="text-[#5f6476]">
-            Sign up with your email and get started.
-          </CardDescription>
-          <div className="flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.35em] text-[#9aa1b8]">
-            <span className="flex-1 border-t border-[#e5e8f0]" />
-            Registration
-            <span className="flex-1 border-t border-[#e5e8f0]" />
+      <Card className="relative overflow-hidden rounded-[28px] border-none bg-white/90 shadow-[0_30px_80px_-45px_rgba(0,0,0,0.4)] backdrop-blur-sm ring-1 ring-black/5">
+        <div className="absolute inset-x-6 top-0 h-1 rounded-full bg-gradient-to-r from-[#0c0c0c] via-[#0c0c0c] to-[#dfff3f]" />
+        <CardHeader className="space-y-3 pb-2 pt-8">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[#f4f5f7] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#0c0c0c]">
+            <span className="h-2 w-2 rounded-full bg-[#dfff3f]" />
+            Onboarding
           </div>
+          <CardTitle className="text-3xl leading-tight text-[#0c0c0c] md:text-[34px]">
+            Create your Capital Catalyst profile
+          </CardTitle>
+          <CardDescription className="text-base text-[#4b4f5c]">
+            Secure your access to live insights, smart alerts, and streamlined investing tools.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp} className="space-y-4">
@@ -94,6 +96,7 @@ export function SignUpForm({
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   autoComplete="given-name"
+                  className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -104,6 +107,7 @@ export function SignUpForm({
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   autoComplete="family-name"
+                  className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 />
               </div>
             </div>
@@ -118,6 +122,7 @@ export function SignUpForm({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
+                className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               />
             </div>
 
@@ -126,7 +131,7 @@ export function SignUpForm({
                 <Label htmlFor="country">Select Country</Label>
                 <select
                   id="country"
-                  className="h-11 rounded-xl border border-[#dfe3ef] bg-white px-3 text-sm text-[#1f2435] shadow-inner focus:border-[#2956e3] focus:outline-none"
+                  className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus:outline-none focus:ring-2 focus:ring-[#0c0c0c] focus:ring-offset-2 focus:ring-offset-white"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                 >
@@ -147,6 +152,7 @@ export function SignUpForm({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   autoComplete="tel"
+                  className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 />
               </div>
             </div>
@@ -156,7 +162,7 @@ export function SignUpForm({
                 <Label htmlFor="gender">Gender</Label>
                 <select
                   id="gender"
-                  className="h-11 rounded-xl border border-[#dfe3ef] bg-white px-3 text-sm text-[#1f2435] shadow-inner focus:border-[#2956e3] focus:outline-none"
+                  className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus:outline-none focus:ring-2 focus:ring-[#0c0c0c] focus:ring-offset-2 focus:ring-offset-white"
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
                 >
@@ -175,6 +181,7 @@ export function SignUpForm({
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   autoComplete="street-address"
+                  className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 />
               </div>
             </div>
@@ -190,7 +197,7 @@ export function SignUpForm({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
-                  className="bg-[#fffbea]"
+                  className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 />
               </div>
               <div className="grid gap-2">
@@ -203,23 +210,24 @@ export function SignUpForm({
                   value={repeatPassword}
                   onChange={(e) => setRepeatPassword(e.target.value)}
                   autoComplete="new-password"
+                  className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 />
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-2xl border border-[#e5e8f0] bg-white px-4 py-3">
+            <div className="flex items-start gap-3 rounded-2xl border border-[#e8eaef] bg-[#f7f8fa] px-4 py-3.5 shadow-inner shadow-black/5">
               <input
                 id="human"
                 type="checkbox"
-                className="mt-1 h-4 w-4 rounded border-[#cbd2e4] text-[#2956e3] focus:ring-[#2956e3]"
+                className="mt-1 h-4 w-4 rounded-md border-[#c6cad3] text-[#0c0c0c] accent-[#0c0c0c] focus:ring-[#0c0c0c]"
                 checked={humanCheck}
                 onChange={(e) => setHumanCheck(e.target.checked)}
               />
               <div className="text-sm">
-                <Label htmlFor="human" className="cursor-pointer text-[#1f2435]">
+                <Label htmlFor="human" className="cursor-pointer text-[#0c0c0c]">
                   I am human
                 </Label>
-                <p className="text-xs text-[#7a8199]">A quick verification to keep accounts safe.</p>
+                <p className="text-xs text-[#4f5664]">A quick verification to keep accounts safe.</p>
               </div>
             </div>
 
@@ -227,14 +235,17 @@ export function SignUpForm({
 
             <Button
               type="submit"
-              className="w-full rounded-xl bg-[#2956e3] text-white hover:bg-[#1f46c1]"
+              className="w-full rounded-full bg-[#0c0c0c] px-6 py-3 text-base font-semibold text-white shadow-[0_25px_65px_-35px_rgba(0,0,0,0.75)] transition-transform hover:-translate-y-0.5 hover:bg-[#111] focus-visible:ring-[#dfff3f] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               disabled={isLoading}
             >
               {isLoading ? "Creating an account..." : "Sign Up"}
             </Button>
-            <div className="text-center text-sm text-[#5f6476]">
+            <div className="text-center text-sm text-[#4b4f5c]">
               Already have an account?{" "}
-              <Link href="/auth/login" className="font-semibold text-[#2956e3] hover:underline">
+              <Link
+                href="/auth/login"
+                className="font-semibold text-[#0c0c0c] underline decoration-[#dfff3f] underline-offset-4"
+              >
                 Sign in
               </Link>
             </div>
