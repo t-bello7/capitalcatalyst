@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${jakarta.className} antialiased`}>
-         <NextTopLoader color="#dfff3f" zIndex={2000} height={5} showSpinner={false} />
+         {/* <NextTopLoader color="#dfff3f" zIndex={2000} height={5} showSpinner={false} /> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
