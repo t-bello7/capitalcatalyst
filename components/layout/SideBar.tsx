@@ -3,16 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ElementType } from "react";
+import { useState } from "react";
 import {
   LayoutDashboard,
-  ShoppingBag,
-  ShoppingCart,
-  Map,
+  ArrowDownToLine,
+  ArrowUpToLine,
+  Clock3,
+  Coins,
+  LineChart,
   Users,
-  Tag,
-  CreditCard,
-  DollarSign,
+  LifeBuoy,
   Settings,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,26 +27,26 @@ type NavItem = {
 
 const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
   {
-    title: "Marketing",
+    title: "Finance Management",
     items: [
       { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-      { label: "Marketplace", href: "/dashboard/marketplace", icon: ShoppingCart },
-      { label: "Orders", href: "/dashboard/orders", icon: ShoppingBag },
-      { label: "Tracking", href: "/dashboard/tracking", icon: Map },
-      { label: "Customers", href: "/dashboard/customers", icon: Users },
-      { label: "Discounts", href: "/dashboard/discounts", icon: Tag },
+      { label: "Deposit", href: "/dashboard/deposit", icon: ArrowDownToLine },
+      { label: "Withdraw", href: "/dashboard/withdraw", icon: ArrowUpToLine },
+      { label: "Transactions", href: "/dashboard/transactions", icon: Clock3 },
     ],
   },
   {
-    title: "Payments",
+    title: "Trading & Investments",
     items: [
-      { label: "Ledger", href: "/dashboard/ledger", icon: CreditCard },
-      { label: "Taxes", href: "/dashboard/taxes", icon: DollarSign },
+      { label: "Trade", href: "/dashboard/trade", icon: Coins },
+      { label: "My Plans", href: "/dashboard/plans", icon: LineChart },
     ],
   },
   {
-    title: "System",
+    title: "Account",
     items: [
+      { label: "Referrals", href: "/dashboard/referrals", icon: Users },
+      { label: "Support", href: "/dashboard/support", icon: LifeBuoy },
       { label: "Settings", href: "/dashboard/settings", icon: Settings },
     ],
   },
@@ -51,31 +54,64 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
 
 const SideBar = () => {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <aside className="hidden lg:flex lg:w-64 xl:w-72 flex-col rounded-[32px] bg-white/90 p-6 text-[#0c0c0c] shadow-[0_35px_90px_-60px_rgba(0,0,0,0.8)] ring-1 ring-black/5 backdrop-blur">
-      <div className="mb-8 flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#0c0c0c] text-base font-semibold uppercase tracking-tight text-white shadow-[0_20px_40px_-24px_rgba(0,0,0,0.6)]">
-          CC
-        </span>
-        <div>
-          <p className="text-lg font-semibold leading-tight">Capital Catalyst</p>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7d838d]">
-            Control deck
-          </p>
+    <aside
+      className={cn(
+        "sticky top-4 z-30 flex min-h-[calc(100vh-32px)] max-h-[calc(100vh-32px)] flex-col rounded-[32px] border border-black/5 bg-white/95 p-5 text-[#0c0c0c] shadow-[0_35px_90px_-60px_rgba(0,0,0,0.8)] ring-1 ring-black/5 backdrop-blur transition-[width] duration-300",
+        "flex-shrink-0",
+        isOpen ? "w-[260px]" : "w-[92px]",
+      )}
+    >
+      <div className="mb-6 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#0c0c0c] text-base font-semibold uppercase tracking-tight text-white shadow-[0_20px_40px_-24px_rgba(0,0,0,0.6)]">
+            CC
+          </span>
+          {isOpen && (
+            <div className="transition-opacity duration-200">
+              <p className="text-lg font-semibold leading-tight">
+                Capital Catalyst
+              </p>
+              <p className="text-xs uppercase tracking-[0.3em] text-[#7d838d]">
+                Control deck
+              </p>
+            </div>
+          )}
         </div>
+        <button
+          type="button"
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-black/10 bg-white text-[#0c0c0c] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f4f5f7]"
+        >
+          {isOpen ? (
+            <ChevronLeft className="h-4 w-4" />
+          ) : (
+            <ChevronRight className="h-4 w-4" />
+          )}
+        </button>
       </div>
 
-      <nav className="space-y-8 text-sm">
+      <nav
+        className={cn(
+          "flex-1 space-y-7 overflow-y-auto pr-1 text-sm",
+          !isOpen && "text-center sm:text-left",
+        )}
+        aria-label="Primary"
+      >
         {NAV_SECTIONS.map((section) => (
           <div key={section.title} className="space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8c92a3]">
-              {section.title}
-            </p>
+            {isOpen && (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-[#8c92a3]">
+                {section.title}
+              </p>
+            )}
             <div className="space-y-1">
               {section.items.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname === item.href;
+                const isActive = pathname?.startsWith(item.href);
 
                 return (
                   <Link
@@ -86,10 +122,11 @@ const SideBar = () => {
                       "text-[#4b4f5c] hover:bg-[#f2f3f7] hover:text-[#0c0c0c]",
                       isActive &&
                         "bg-[#e8f8ec] text-[#0c0c0c] ring-1 ring-[#b5ebc7]",
+                      !isOpen && "justify-center gap-0 px-0",
                     )}
                   >
-                    <Icon className="h-4 w-4" />
-                    {item.label}
+                    <Icon className="h-4 w-4 shrink-0" />
+                    {isOpen && <span className="truncate">{item.label}</span>}
                   </Link>
                 );
               })}
@@ -98,22 +135,29 @@ const SideBar = () => {
         ))}
       </nav>
 
-      <div className="mt-auto pt-6">
+      {/* <div className="pt-6">
         <div className="rounded-3xl bg-[#f7f8fa] p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#8c92a3]">
-            System
-          </p>
-          <div className="mt-3 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-semibold text-[#0c0c0c]">Dark mode</p>
-              <p className="text-xs text-[#7d838d]">Coming soon</p>
-            </div>
+          <div className="flex items-center justify-between gap-3">
+            {isOpen ? (
+              <div>
+                <p className="text-sm font-semibold text-[#0c0c0c]">
+                  Dark mode
+                </p>
+                <p className="text-xs text-[#7d838d]">
+                  Synced with your system
+                </p>
+              </div>
+            ) : (
+              <span className="text-xs font-medium uppercase tracking-[0.3em] text-[#7d838d]">
+                Mode
+              </span>
+            )}
             <div className="relative inline-flex h-6 w-11 items-center rounded-full bg-[#0c0c0c]/15">
               <span className="inline-block h-4 w-4 translate-x-1 rounded-full bg-white shadow transition-transform" />
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 };
