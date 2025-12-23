@@ -13,7 +13,6 @@ import {
   LineChart,
   Users,
   LifeBuoy,
-  Settings,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -29,7 +28,7 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
   {
     title: "Finance Management",
     items: [
-      { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    //   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
       { label: "Deposit", href: "/dashboard/deposit", icon: ArrowDownToLine },
       { label: "Withdraw", href: "/dashboard/withdraw", icon: ArrowUpToLine },
       { label: "Transactions", href: "/dashboard/transactions", icon: Clock3 },
@@ -39,7 +38,7 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
     title: "Trading & Investments",
     items: [
       { label: "Trade", href: "/dashboard/trade", icon: Coins },
-      { label: "My Plans", href: "/dashboard/plans", icon: LineChart },
+      { label: "My Trades", href: "/dashboard/my-trade", icon: LineChart },
     ],
   },
   {
@@ -47,7 +46,6 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
     items: [
       { label: "Referrals", href: "/dashboard/referrals", icon: Users },
       { label: "Support", href: "/dashboard/support", icon: LifeBuoy },
-      { label: "Settings", href: "/dashboard/settings", icon: Settings },
     ],
   },
 ];
@@ -101,6 +99,20 @@ const SideBar = () => {
         )}
         aria-label="Primary"
       >
+    <Link
+        key={"/dashboard"}
+        href={"/dashboard"}
+        className={cn(
+            "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all",
+            "text-[#4b4f5c] hover:bg-[#f2f3f7] hover:text-[#0c0c0c]",
+            pathname === "/dashboard" &&
+            "bg-[#e8f8ec] text-[#0c0c0c] ring-1 ring-[#b5ebc7]",
+            !isOpen && "justify-center gap-0 px-0",
+        )}
+        >
+        <LayoutDashboard className="h-4 w-4 shrink-0" />
+        {isOpen && <span className="truncate">Dashboard</span>}
+        </Link>
         {NAV_SECTIONS.map((section) => (
           <div key={section.title} className="space-y-3">
             {isOpen && (
@@ -108,10 +120,11 @@ const SideBar = () => {
                 {section.title}
               </p>
             )}
+          
             <div className="space-y-1">
               {section.items.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname?.startsWith(item.href);
+                const isActive = pathname === item.href;
 
                 return (
                   <Link
