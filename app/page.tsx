@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { LogoMark } from "@/components/brand/Logo";
 
 const features = [
   { title: "Staking Opportunities", copy: "Earn consistent rewards while supporting blockchain security and efficiency.", icon: "💼" },
@@ -100,9 +101,7 @@ export default function Home() {
       <header className="sticky top-0 z-20 border-b border-white/60 bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0c0c0c] text-base font-semibold text-white shadow-[0_18px_40px_-26px_rgba(0,0,0,0.55)]">
-              CC
-            </div>
+            <LogoMark className="h-11 w-11" />
             <div>
               <p className="text-lg font-semibold">Capital Catalyst</p>
               <p className="text-xs text-[#4b4f5c]">Invest for the future</p>
@@ -572,9 +571,7 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 md:grid-cols-3">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-semibold text-[#0c0c0c]">
-                CC
-              </div>
+              <LogoMark className="h-10 w-10" />
               <span className="text-lg font-semibold">Capital Catalyst</span>
             </div>
             <p className="text-sm text-white/70">

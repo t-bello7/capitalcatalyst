@@ -13,10 +13,12 @@ import {
   LineChart,
   Users,
   LifeBuoy,
+  LogOut,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LogoMark } from "@/components/brand/Logo";
 
 type NavItem = {
   label: string;
@@ -50,6 +52,12 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
   },
 ];
 
+const USER_PROFILE = {
+  firstName: "Hannah",
+  fullName: "Hannah Rivera",
+  role: "Copy trader",
+};
+
 const SideBar = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(true);
@@ -64,9 +72,7 @@ const SideBar = () => {
     >
       <div className="mb-6 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#0c0c0c] text-base font-semibold uppercase tracking-tight text-white shadow-[0_20px_40px_-24px_rgba(0,0,0,0.6)]">
-            CC
-          </span>
+          <LogoMark className="h-11 w-11" />
           {isOpen && (
             <div className="transition-opacity duration-200">
               <p className="text-lg font-semibold leading-tight">
@@ -90,6 +96,27 @@ const SideBar = () => {
             <ChevronRight className="h-4 w-4" />
           )}
         </button>
+      </div>
+
+      <div
+        className={cn(
+          "mb-6 flex items-center gap-3 rounded-[24px] border border-black/5 bg-[#f7f8fa] px-3 py-3 shadow-inner shadow-black/5",
+          !isOpen && "justify-center px-2",
+        )}
+      >
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#dfff3f] via-[#c5f63b] to-[#0c0c0c] text-sm font-semibold text-[#0c0c0c]">
+          {USER_PROFILE.firstName.slice(0, 1)}
+        </div>
+        {isOpen && (
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-[#0c0c0c]">
+              {USER_PROFILE.fullName}
+            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#7d838d]">
+              {USER_PROFILE.role}
+            </p>
+          </div>
+        )}
       </div>
 
       <nav
@@ -171,6 +198,19 @@ const SideBar = () => {
           </div>
         </div>
       </div> */}
+
+      <div className="pt-6">
+        <button
+          type="button"
+          className={cn(
+            "flex w-full items-center gap-3 rounded-2xl border border-black/10 bg-white px-3 py-2.5 text-sm font-semibold text-[#0c0c0c] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f4f5f7]",
+            !isOpen && "justify-center px-0",
+          )}
+        >
+          <LogOut className="h-4 w-4 shrink-0" />
+          {isOpen && <span className="truncate">Logout</span>}
+        </button>
+      </div>
     </aside>
   );
 };

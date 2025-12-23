@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { SignUpForm } from "@/components/sign-up-form";
 import Illustration from "@/assets/images/cryptocurrency.png";
+import { LogoMark } from "@/components/brand/Logo";
 
 export default function Page() {
   return (
@@ -8,9 +9,7 @@ export default function Page() {
       <div className="mx-auto max-w-6xl px-4 py-12 lg:py-16">
         <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0c0c0c] text-base font-semibold uppercase tracking-tight text-white shadow-[0_20px_40px_-24px_rgba(0,0,0,0.45)]">
-              CC
-            </span>
+            <LogoMark className="h-11 w-11" />
             <div>
               <p className="text-lg font-semibold">Capital Catalyst</p>
               <p className="text-sm text-[#4b4f5c]">Invest for the future</p>
