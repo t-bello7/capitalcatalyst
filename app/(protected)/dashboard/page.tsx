@@ -11,12 +11,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { getUserProfile } from "@/lib/supabase/user";
+import { getUserBalances, getUserProfile } from "@/lib/supabase/user";
 
-const balances = [
-  { label: "Available balance", value: "$18,420.00", muted: true },
-  { label: "Locked balance", value: "$2,150.00", muted: false },
-];
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(value);
 
 const metrics = [
   { label: "Total profit", value: "$9,855.00", icon: TrendingUp },
@@ -112,6 +113,15 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const profile = await getUserProfile(supabase);
   const greetingName = profile.displayName || "Investor";
+  const { available, locked } = await getUserBalances(supabase);
+  const balances = [
+    {
+      label: "Available balance",
+      value: formatCurrency(available),
+      muted: true,
+    },
+    { label: "Locked balance", value: formatCurrency(locked), muted: false },
+  ];
 
   return (
     <div className="space-y-8 text-[#0c0c0c]">
