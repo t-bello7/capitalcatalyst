@@ -48,11 +48,6 @@ const categories: SupportCategory[] = [
     icon: ShieldCheck,
   },
   {
-    title: "Disputes & fraud",
-    description: "Chargebacks, unauthorized transactions, evidence upload.",
-    icon: AlertTriangle,
-  },
-  {
     title: "Compliance",
     description: "KYC review status, documents, and verification errors.",
     icon: FileLock2,
@@ -79,12 +74,7 @@ const issues: SupportIssue[] = [
     title: "Copy trade is out of sync",
     detail:
       "Check if your allocation dropped below the trader minimum. Sync delays can happen during high volatility.",
-  },
-  {
-    title: "Account locked after login",
-    detail:
-      "We lock accounts after suspicious attempts. Verify your device and reset security settings to restore access.",
-  },
+  }
 ];
 
 const SupportPage = () => {
@@ -105,23 +95,6 @@ const SupportPage = () => {
               Get help with funding, copy trading, security, and account
               verification.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <div className="flex w-full max-w-[420px] items-center gap-2 rounded-full border border-black/5 bg-white/90 px-3 py-2 shadow-inner shadow-black/5">
-                <span className="rounded-full bg-[#f7f8fa] px-3 py-1 text-xs font-semibold text-[#7d838d]">
-                  Search
-                </span>
-                <input
-                  className="flex-1 bg-transparent text-sm text-[#0c0c0c] outline-none placeholder:text-[#9aa1ad]"
-                  placeholder="Search issues, topics, and articles"
-                />
-                <button className="rounded-full bg-[#0c0c0c] px-4 py-2 text-xs font-semibold text-white">
-                  Find help
-                </button>
-              </div>
-              <button className="rounded-full border border-black/10 px-5 py-2 text-sm font-semibold hover:-translate-y-0.5">
-                Open a ticket
-              </button>
-            </div>
           </div>
           <div className="rounded-[28px] border border-black/5 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(0,0,0,0.4)]">
             <div className="flex items-center gap-3">
@@ -140,47 +113,10 @@ const SupportPage = () => {
               <p className="mt-2 text-xs text-[#7d838d]">
                 All systems operational · Withdrawals processing normally
               </p>
-              <button className="mt-3 text-xs font-semibold text-[#0c0c0c] underline decoration-[#dfff3f] underline-offset-4">
-                View status page
-              </button>
             </div>
           </div>
         </div>
       </section>
-
-      <section className="space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold">Popular topics</h2>
-          <button className="text-sm font-semibold text-[#0c0c0c] underline decoration-[#dfff3f] underline-offset-4">
-            See all articles
-          </button>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {categories.map((category) => {
-            const Icon = category.icon;
-            return (
-              <article
-                key={category.title}
-                className="rounded-[28px] border border-black/5 bg-white/90 p-5 shadow-[0_30px_80px_-60px_rgba(0,0,0,0.7)]"
-              >
-                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f7f8fa] text-[#0c0c0c] shadow-inner shadow-black/5">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <h3 className="mt-4 text-lg font-semibold">
-                  {category.title}
-                </h3>
-                <p className="mt-2 text-sm text-[#7d838d]">
-                  {category.description}
-                </p>
-                <button className="mt-4 text-sm font-semibold text-[#0c0c0c] underline decoration-[#dfff3f] underline-offset-4">
-                  Explore
-                </button>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
       <section className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
         <div className="rounded-[32px] border border-black/5 bg-white/90 p-6 shadow-[0_30px_80px_-60px_rgba(0,0,0,0.8)]">
           <h2 className="text-2xl font-semibold">Issues we resolve fast</h2>
@@ -205,21 +141,6 @@ const SupportPage = () => {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-[32px] border border-black/5 bg-[#0c0c0c] p-6 text-white shadow-[0_35px_90px_-60px_rgba(0,0,0,0.8)]">
-            <p className="text-xs uppercase tracking-[0.3em] text-white/60">
-              Urgent help
-            </p>
-            <h3 className="mt-3 text-xl font-semibold">
-              Report suspicious activity
-            </h3>
-            <p className="mt-2 text-sm text-white/70">
-              Freeze your account and contact our security team immediately.
-            </p>
-            <button className="mt-5 w-full rounded-full bg-[#dfff3f] px-4 py-2 text-sm font-semibold text-[#0c0c0c] shadow-[0_20px_60px_-35px_rgba(198,214,20,0.6)]">
-              Freeze account
-            </button>
-          </div>
-
           <div className="rounded-[32px] border border-black/5 bg-white/90 p-6 shadow-[0_30px_80px_-60px_rgba(0,0,0,0.8)]">
             <p className="text-xs uppercase tracking-[0.3em] text-[#7d838d]">
               Contact

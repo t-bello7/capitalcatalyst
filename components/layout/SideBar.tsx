@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ElementType } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   LayoutDashboard,
   ArrowDownToLine,
@@ -16,11 +16,10 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  UserCircle2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "@/components/brand/Logo";
-import { createClient } from "@/lib/supabase/client";
-import { getUserProfile } from "@/lib/supabase/user";
 
 type NavItem = {
   label: string;
@@ -54,40 +53,27 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
   },
 ];
 
-const SideBar = () => {
+type SidebarProfile = {
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  initials: string;
+  displayName: string;
+  avatarUrl: string;
+  kycVerified: boolean;
+  kycInfo: string;
+};
+
+type SideBarProps = {
+  profile: SidebarProfile;
+  onProfileClick: () => void;
+};
+
+const SideBar = ({ profile, onProfileClick }: SideBarProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [profile, setProfile] = useState({
-    firstName: "",
-    fullName: "",
-    initials: "CC",
-    displayName: "Investor",
-  });
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadProfile = async () => {
-      const supabase = createClient();
-      const data = await getUserProfile(supabase);
-      if (isMounted) {
-        setProfile({
-          firstName: data.firstName,
-          fullName: data.fullName,
-          initials: data.initials || "CC",
-          displayName: data.displayName,
-        });
-      }
-    };
-
-    loadProfile();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
@@ -141,8 +127,17 @@ const SideBar = () => {
           !isOpen && "justify-center px-2",
         )}
       >
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#dfff3f] via-[#c5f63b] to-[#0c0c0c] text-sm font-semibold text-[#0c0c0c]">
-          {profile.initials}
+        <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#dfff3f] via-[#c5f63b] to-[#0c0c0c] text-sm font-semibold text-[#0c0c0c]">
+          {profile.avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={profile.avatarUrl}
+              alt={profile.displayName}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            profile.initials
+          )}
         </div>
         {isOpen && (
           <div className="min-w-0">
@@ -155,6 +150,18 @@ const SideBar = () => {
           </div>
         )}
       </div>
+
+      <button
+        type="button"
+        onClick={onProfileClick}
+        className={cn(
+          "mb-6 flex items-center gap-3 rounded-2xl border border-black/10 bg-white px-3 py-2.5 text-sm font-semibold text-[#0c0c0c] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f4f5f7]",
+          !isOpen && "justify-center px-0",
+        )}
+      >
+        <UserCircle2 className="h-4 w-4 shrink-0" />
+        {isOpen && <span className="truncate">Profile</span>}
+      </button>
 
       <nav
         className={cn(
