@@ -8,9 +8,10 @@ import {
   PieChart,
   Wallet,
   TrendingUp,
-  TrendingDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/server";
+import { getUserProfile } from "@/lib/supabase/user";
 
 const balances = [
   { label: "Available balance", value: "$18,420.00", muted: true },
@@ -107,7 +108,11 @@ const MarketCard = ({
   </div>
 );
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const profile = await getUserProfile(supabase);
+  const greetingName = profile.displayName || "Investor";
+
   return (
     <div className="space-y-8 text-[#0c0c0c]">
       <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
@@ -116,7 +121,9 @@ export default function DashboardPage() {
             <p className="text-sm uppercase tracking-[0.3em] text-white/70">
               Account overview
             </p>
-            <h2 className="mt-3 text-3xl font-semibold">Hello, Investor</h2>
+            <h2 className="mt-3 text-3xl font-semibold">
+              Hello, {greetingName}
+            </h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {balances.map((balance) => (
                 <div key={balance.label}>

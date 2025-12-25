@@ -1,42 +1,25 @@
 "use client";
 
 import { Copy, Check, Wallet } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ReferralTable, type ReferralRow } from "@/components/referrals/referral-table";
+import { createClient } from "@/lib/supabase/client";
+import { data } from "framer-motion/client";
 
-const referralLink = "https://capitalcatalyst.com/ref/tesfie";
-const referralCode = "TESFIE22";
-const referrals: ReferralRow[] = [
-  {
-    firstName: "Olivia Bennet",
-    role: "Wealth Partner",
-    email: "olivia@example.com",
-    joinedDate: "12 Jan 2024",
-    joinedTime: "8:24 am",
-    earned: "$120",
-    avatarColor: "#0c0c0c",
-  },
-  {
-    firstName: "James Carter",
-    role: "Analyst",
-    email: "james@example.com",
-    joinedDate: "02 Feb 2024",
-    joinedTime: "4:55 pm",
-    earned: "$80",
-    avatarColor: "#dfff3f",
-  },
-  {
-    firstName: "Ethan Miles",
-    role: "Investor",
-    email: "ethan@example.com",
-    joinedDate: "08 Mar 2024",
-    joinedTime: "10:10 am",
-    earned: "$50",
-    avatarColor: "#7c3aed",
-  },
-];
+const formatDate = (value: string) =>
+  new Date(value).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+const formatTime = (value: string) =>
+  new Date(value).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
 
 const CopyButton = ({
   value,
@@ -78,6 +61,99 @@ const CopyButton = ({
 };
 
 const ReferralPage = () => {
+  const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [referrals, setReferrals] = useState<ReferralRow[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const referralLink = useMemo(() => {
+    if (!referralCode) return "";
+    if (typeof window === "undefined") return "";
+    return `${window.location.origin}/signup?ref=${referralCode}`;
+  }, [referralCode]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const supabase = createClient();
+
+    const loadReferralData = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        if (isMounted) {
+          setError("Unable to load referral details.");
+        }
+        return;
+      }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("referral_code")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError && isMounted) {
+        setError("Unable to load referral code.");
+      } else if (isMounted) {
+        setReferralCode(profile?.referral_code ?? null);
+      }
+
+      const { data: referralRows, error: referralsError } = await supabase
+        .from("referrals")
+        .select("referred_id, created_at")
+        .eq("referrer_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (referralsError || !referralRows) {
+        if (isMounted) {
+          setError("Unable to load referral list.");
+          setReferrals([]);
+        }
+        return;
+      }
+      
+      const referredIds = referralRows.map((row) => row.referred_id);
+      let profileMap = new Map<string, { first_name: string | null }>();
+      if (referredIds.length > 0) {
+          const { data: referredProfiles } = await supabase
+          .from("profiles")
+          .select("id, first_name")
+          .in("id", referredIds);
+
+        profileMap = new Map(
+          referredProfiles?.map((profile) => [
+            profile.id,
+            { first_name: profile.first_name },
+          ]) ?? [],
+        );
+      }
+      const mappedReferrals = referralRows.map((row, index) => {
+        const referredProfile = profileMap.get(row.referred_id);
+        return {
+          firstName: referredProfile?.first_name || "Investor",
+          role: "Investor",
+          email: row.referred_id,
+          joinedDate: formatDate(row.created_at),
+          joinedTime: formatTime(row.created_at),
+          earned: "$0",
+          avatarColor: index % 2 === 0 ? "#0c0c0c" : "#dfff3f",
+        } satisfies ReferralRow;
+      });
+
+      if (isMounted) {
+        setReferrals(mappedReferrals);
+      }
+    };
+
+    void loadReferralData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <div className="space-y-8 text-[#0c0c0c]">
       <div className="rounded-[32px] border border-black/5 bg-white/90 p-6 shadow-[0_30px_80px_-60px_rgba(0,0,0,0.8)]">
@@ -101,8 +177,10 @@ const ReferralPage = () => {
                 Referral link
               </p>
               <div className="mt-3 flex flex-col gap-3 rounded-2xl border border-[#0c0c0c]/10 bg-white p-4 text-sm font-medium text-[#0c0c0c] shadow-inner shadow-black/5 md:flex-row md:items-center md:justify-between">
-                <p className="truncate">{referralLink}</p>
-                <CopyButton value={referralLink} />
+                <p className="truncate">{referralLink || "Loading..."}</p>
+                {referralLink ? (
+                  <CopyButton value={referralLink} />
+                ) : null}
               </div>
             </div>
 
@@ -112,10 +190,12 @@ const ReferralPage = () => {
                   Referral code
                 </p>
                 <p className="mt-2 text-2xl font-semibold tracking-[0.16em] text-[#0c0c0c]">
-                  {referralCode}
+                  {referralCode ?? "—"}
                 </p>
               </div>
-              <CopyButton value={referralCode} className="w-full md:w-auto" />
+              {referralCode ? (
+                <CopyButton value={referralCode} className="w-full md:w-auto" />
+              ) : null}
             </div>
           </div>
 
@@ -150,6 +230,9 @@ const ReferralPage = () => {
           </div>
         </div>
 
+        {error ? (
+          <p className="text-sm text-rose-500">{error}</p>
+        ) : null}
         <ReferralTable data={referrals} />
       </div>
     </div>

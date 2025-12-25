@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function SignUpForm({
   className,
@@ -28,10 +28,19 @@ export function SignUpForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const searchParams = useSearchParams();
+  const refFromQuery = searchParams.get("ref") ?? "";
+  const [refCode, setRefCode] = useState(refFromQuery);
   const [humanCheck, setHumanCheck] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (refFromQuery && !refCode) {
+      setRefCode(refFromQuery);
+    }
+  }, [refFromQuery, refCode]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,10 +61,20 @@ export function SignUpForm({
     }
 
     try {
+      const metadata: Record<string, string> = {
+        first_name: firstName,
+        last_name: lastName,
+      };
+
+      if (refCode.trim()) {
+        metadata.referrer_code = refCode.trim();
+      }
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          data: metadata,
           emailRedirectTo: `${window.location.origin}/protected`,
         },
       });
@@ -212,6 +231,18 @@ export function SignUpForm({
                   className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 />
               </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="refcode">Referral code (optional)</Label>
+              <Input
+                id="refcode"
+                placeholder="Enter referral code"
+                value={refCode}
+                onChange={(e) => setRefCode(e.target.value)}
+                autoComplete="off"
+                className="h-12 rounded-2xl border-none bg-[#f7f8fa] px-4 text-[15px] text-[#0c0c0c] shadow-inner shadow-black/5 focus-visible:ring-2 focus-visible:ring-[#0c0c0c] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              />
             </div>
 
             <div className="flex items-start gap-3 rounded-2xl border border-[#e8eaef] bg-[#f7f8fa] px-4 py-3.5 shadow-inner shadow-black/5">

@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { ElementType } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   ArrowDownToLine,
@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "@/components/brand/Logo";
+import { createClient } from "@/lib/supabase/client";
+import { getUserProfile } from "@/lib/supabase/user";
 
 type NavItem = {
   label: string;
@@ -52,15 +54,50 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
   },
 ];
 
-const USER_PROFILE = {
-  firstName: "Hannah",
-  fullName: "Hannah Rivera",
-  role: "Copy trader",
-};
-
 const SideBar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [profile, setProfile] = useState({
+    firstName: "",
+    fullName: "",
+    initials: "CC",
+    displayName: "Investor",
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadProfile = async () => {
+      const supabase = createClient();
+      const data = await getUserProfile(supabase);
+      if (isMounted) {
+        setProfile({
+          firstName: data.firstName,
+          fullName: data.fullName,
+          initials: data.initials || "CC",
+          displayName: data.displayName,
+        });
+      }
+    };
+
+    loadProfile();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+    setIsLoggingOut(false);
+  };
 
   return (
     <aside
@@ -105,15 +142,15 @@ const SideBar = () => {
         )}
       >
         <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#dfff3f] via-[#c5f63b] to-[#0c0c0c] text-sm font-semibold text-[#0c0c0c]">
-          {USER_PROFILE.firstName.slice(0, 1)}
+          {profile.initials}
         </div>
         {isOpen && (
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-[#0c0c0c]">
-              {USER_PROFILE.fullName}
+              {profile.fullName || profile.displayName}
             </p>
             <p className="text-xs uppercase tracking-[0.3em] text-[#7d838d]">
-              {USER_PROFILE.role}
+              {profile.firstName ? "Copy trader" : "Account"}
             </p>
           </div>
         )}
@@ -202,13 +239,19 @@ const SideBar = () => {
       <div className="pt-6">
         <button
           type="button"
+          onClick={handleLogout}
+          disabled={isLoggingOut}
           className={cn(
-            "flex w-full items-center gap-3 rounded-2xl border border-black/10 bg-white px-3 py-2.5 text-sm font-semibold text-[#0c0c0c] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f4f5f7]",
+            "flex w-full items-center gap-3 rounded-2xl border border-black/10 bg-white px-3 py-2.5 text-sm font-semibold text-[#0c0c0c] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f4f5f7] disabled:cursor-not-allowed disabled:opacity-70",
             !isOpen && "justify-center px-0",
           )}
         >
           <LogOut className="h-4 w-4 shrink-0" />
-          {isOpen && <span className="truncate">Logout</span>}
+          {isOpen && (
+            <span className="truncate">
+              {isLoggingOut ? "Logging out..." : "Logout"}
+            </span>
+          )}
         </button>
       </div>
     </aside>
