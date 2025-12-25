@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "nextjs-toploader/app";
 
 type CopiedTrade = {
   id: string;
@@ -43,20 +44,25 @@ type TradeResponse = {
   history: PositionHistory[];
 };
 
+const depositedPlans = [
+  { name: "Starter", amount: "$1,000", status: "Active" },
+  { name: "Growth", amount: "$3,000", status: "Active" },
+];
+
 const mockTradeData: TradeResponse = {
   summary: [
     {
-      label: "Active copies",
-      value: "5 traders",
-      helper: "Across 8 open positions",
+      label: "Active copy trades",
+      value: "5 trades",
+      helper: "Across 2 open copy traders",
     },
     {
-      label: "Total allocated",
+      label: "Total Invested",
       value: "$42,800",
       helper: "Auto-rebalanced daily",
     },
     {
-      label: "Unrealized PnL",
+      label: "Unrealized Profit",
       value: "+$3,420",
       helper: "Last 24h +$420",
     },
@@ -82,8 +88,38 @@ const mockTradeData: TradeResponse = {
       riskLevel: "Medium",
       avatarColor: "#0c0c0c",
     },
-    {
+      {
       id: "trade-2",
+      trader: "Hannah Rivera",
+      handle: "@crypto.hannah12",
+      market: "BTC-USDT Perpetual",
+      status: "Active",
+      allocation: "$12,500",
+      entry: "$62,140",
+      current: "$64,820",
+      pnl: "+$740",
+      roi: "+5.9%",
+      duration: "3d 4h",
+      riskLevel: "Medium",
+      avatarColor: "#0c0c0c",
+    },
+
+  {
+      id: "trade-3",
+      trader: "Hannah Rivera",
+      handle: "@crypto.hannah12",
+      market: "BTC-USDT Perpetual",
+      status: "Active",
+      allocation: "$12,500",
+      entry: "$62,140",
+      current: "$64,820",
+      pnl: "+$740",
+      roi: "+5.9%",
+      duration: "3d 4h",
+      riskLevel: "Medium",
+      avatarColor: "#0c0c0c",
+    },    {
+      id: "trade-4",
       trader: "Tony Bro",
       handle: "@tony_bro",
       market: "ETH-USDT Perpetual",
@@ -98,7 +134,7 @@ const mockTradeData: TradeResponse = {
       avatarColor: "#0c0c0c",
     },
     {
-      id: "trade-3",
+      id: "trade-5",
       trader: "Crypto Box",
       handle: "@cryptobox",
       market: "SOL-USDT Perpetual",
@@ -111,7 +147,7 @@ const mockTradeData: TradeResponse = {
       duration: "12h 20m",
       riskLevel: "Low",
       avatarColor: "#0c0c0c",
-    },
+    }
   ],
   history: [
     {
@@ -159,6 +195,7 @@ const fetchTrades = async (): Promise<TradeResponse> => {
   });
 };
 
+
 const getInitials = (name: string) =>
   name
     .split(/\s+/)
@@ -169,7 +206,7 @@ const getInitials = (name: string) =>
 
 const MyTrade = () => {
   const [data, setData] = useState<TradeResponse | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
     let isMounted = true;
 
@@ -208,15 +245,9 @@ const MyTrade = () => {
             <h1 className="mt-2 text-3xl font-semibold">
               Track the trades you are copying
             </h1>
-            <p className="mt-2 text-sm text-white/70">
-              Monitor allocations, live PnL, and risk levels in real time.
-            </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button className="rounded-full border border-white/15 bg-white/5 px-5 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/10">
-              Manage risk
-            </button>
-            <button className="rounded-full bg-[#dfff3f] px-5 py-2 text-sm font-semibold text-[#0c0c0c] shadow-[0_20px_60px_-35px_rgba(198,214,20,0.6)] transition hover:-translate-y-0.5">
+            <button onClick={() => router.push("/dashboard/deposit")} className="rounded-full bg-[#dfff3f] px-5 py-2 text-sm font-semibold text-[#0c0c0c] shadow-[0_20px_60px_-35px_rgba(198,214,20,0.6)] transition hover:-translate-y-0.5">
               Add funds
             </button>
           </div>
@@ -240,17 +271,18 @@ const MyTrade = () => {
         </div>
       </section>
 
+  
       <section className="space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-2xl font-semibold text-[#0c0c0c]">
             Active copy positions
           </h2>
-          <button className="text-sm font-semibold text-[#0c0c0c] underline decoration-[#dfff3f] underline-offset-4">
-            View history
+          <button onClick={() => router.push("/dashboard/trade")} className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-[#0c0c0c] shadow-sm">
+            Add Trade
           </button>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3 max-h-[40vh] overflow-y-scroll">
           {data.active.map((trade) => (
             <article
               key={trade.id}

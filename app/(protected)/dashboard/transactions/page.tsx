@@ -75,9 +75,6 @@ const TransactionsPage = () => {
               Monitor deposits and withdrawals in one organized view.
             </p>
           </div>
-          <Button className="rounded-full bg-[#0c0c0c] text-white hover:bg-[#111]">
-            Export CSV
-          </Button>
         </div>
 
         <div className="mt-8 flex flex-wrap gap-3 rounded-[28px] border border-black/5 bg-[#f7f8fa] p-2 text-sm font-semibold">

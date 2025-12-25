@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   ChevronDown,
@@ -8,6 +8,7 @@ import {
   Clock3,
   Wallet,
   ArrowRight,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +27,20 @@ const highlights = [
 const WithdrawPage = () => {
   const [open, setOpen] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState(methods[0]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bankDetails, setBankDetails] = useState({
+    accountName: "",
+    bankName: "",
+    accountNumber: "",
+    routingNumber: "",
+  });
+  const [cryptoAddress, setCryptoAddress] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const withdrawableBalance = "$12,450.00";
+  const isBankTransfer = useMemo(
+    () => selectedMethod.label === "Bank transfer",
+    [selectedMethod.label],
+  );
 
   return (
     <div className="space-y-8 text-[#0c0c0c]">
@@ -105,10 +120,128 @@ const WithdrawPage = () => {
           </div>
         </div>
 
-        <Button className="mt-8 w-full rounded-2xl bg-[#0c0c0c] py-5 text-base font-semibold text-white hover:bg-[#111]">
+        <Button
+          className="mt-8 w-full rounded-2xl bg-[#0c0c0c] py-5 text-base font-semibold text-white hover:bg-[#111]"
+          onClick={() => setIsModalOpen(true)}
+        >
           Proceed to withdraw <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
+
+      {isModalOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6">
+          <div className="w-full max-w-lg rounded-[28px] border border-black/10 bg-white p-6 shadow-[0_40px_90px_-45px_rgba(0,0,0,0.6)]">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-[#7d838d]">
+                  Withdraw via {selectedMethod.label}
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold">
+                  Enter payout details
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className="rounded-full border border-black/10 p-2 text-[#0c0c0c] transition hover:-translate-y-0.5 hover:bg-[#f7f8fa]"
+                aria-label="Close withdrawal modal"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              <label className="flex flex-col gap-2 text-sm font-semibold text-[#0c0c0c]">
+                Amount to withdraw
+                <input
+                  value={withdrawAmount}
+                  onChange={(event) => setWithdrawAmount(event.target.value)}
+                  className="rounded-2xl border border-black/10 bg-[#f7f8fa] px-4 py-3 text-sm shadow-inner shadow-black/5 focus:outline-none focus:ring-2 focus:ring-[#0c0c0c]"
+                  placeholder="Enter amount"
+                  type="number"
+                />
+                <span className="text-xs font-normal text-[#7d838d]">
+                  Withdrawable balance: {withdrawableBalance}
+                </span>
+              </label>
+              {isBankTransfer ? (
+                <>
+                  <label className="flex flex-col gap-2 text-sm font-semibold text-[#0c0c0c]">
+                    Account name
+                    <input
+                      value={bankDetails.accountName}
+                      onChange={(event) =>
+                        setBankDetails((prev) => ({
+                          ...prev,
+                          accountName: event.target.value,
+                        }))
+                      }
+                      className="rounded-2xl border border-black/10 bg-[#f7f8fa] px-4 py-3 text-sm shadow-inner shadow-black/5 focus:outline-none focus:ring-2 focus:ring-[#0c0c0c]"
+                      placeholder="Full name on account"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-2 text-sm font-semibold text-[#0c0c0c]">
+                    Bank name
+                    <input
+                      value={bankDetails.bankName}
+                      onChange={(event) =>
+                        setBankDetails((prev) => ({
+                          ...prev,
+                          bankName: event.target.value,
+                        }))
+                      }
+                      className="rounded-2xl border border-black/10 bg-[#f7f8fa] px-4 py-3 text-sm shadow-inner shadow-black/5 focus:outline-none focus:ring-2 focus:ring-[#0c0c0c]"
+                      placeholder="Bank"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-2 text-sm font-semibold text-[#0c0c0c]">
+                    Account number
+                    <input
+                      value={bankDetails.accountNumber}
+                      onChange={(event) =>
+                        setBankDetails((prev) => ({
+                          ...prev,
+                          accountNumber: event.target.value,
+                        }))
+                      }
+                      className="rounded-2xl border border-black/10 bg-[#f7f8fa] px-4 py-3 text-sm shadow-inner shadow-black/5 focus:outline-none focus:ring-2 focus:ring-[#0c0c0c]"
+                      placeholder="Account number"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-2 text-sm font-semibold text-[#0c0c0c]">
+                    Routing number
+                    <input
+                      value={bankDetails.routingNumber}
+                      onChange={(event) =>
+                        setBankDetails((prev) => ({
+                          ...prev,
+                          routingNumber: event.target.value,
+                        }))
+                      }
+                      className="rounded-2xl border border-black/10 bg-[#f7f8fa] px-4 py-3 text-sm shadow-inner shadow-black/5 focus:outline-none focus:ring-2 focus:ring-[#0c0c0c]"
+                      placeholder="Routing number"
+                    />
+                  </label>
+                </>
+              ) : (
+                <label className="flex flex-col gap-2 text-sm font-semibold text-[#0c0c0c]">
+                  Wallet address
+                  <input
+                    value={cryptoAddress}
+                    onChange={(event) => setCryptoAddress(event.target.value)}
+                    className="rounded-2xl border border-black/10 bg-[#f7f8fa] px-4 py-3 text-sm shadow-inner shadow-black/5 focus:outline-none focus:ring-2 focus:ring-[#0c0c0c]"
+                    placeholder="Paste wallet address"
+                  />
+                </label>
+              )}
+            </div>
+
+            <Button className="mt-6 w-full rounded-2xl bg-[#0c0c0c] py-5 text-base font-semibold text-white hover:bg-[#111]">
+              Submit withdrawal request
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };
